@@ -12,4 +12,6 @@ public interface SideQuestRepository extends JpaRepository<SideQuestEntity, Long
 
     List<SideQuestEntity> findByStateInAndParentIsNull(List<SideQuestFinishingStateEnum> states);
 
+    long countByState(SideQuestFinishingStateEnum state);
+
 }

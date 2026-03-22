@@ -24,6 +24,10 @@ public class SideQuestService {
         ));
     }
 
+    public long countCompleted() {
+        return repository.countByState(SideQuestFinishingStateEnum.DONE);
+    }
+
     @Transactional
     public SideQuestEntity create(SideQuestEntity quest) {
         return repository.save(quest);
@@ -36,7 +40,6 @@ public class SideQuestService {
                     .orElseThrow(() -> new RuntimeException("Parent not found"));
             quest.setParent(parent);
         } else if (quest.getId() != null) {
-            // Check if it already has a parent that we should preserve
             repository.findById(quest.getId()).ifPresent(existing -> {
                 quest.setParent(existing.getParent());
             });
@@ -56,7 +59,6 @@ public class SideQuestService {
         if (allDone && !parent.getSubQuests().isEmpty()) {
             parent.setState(SideQuestFinishingStateEnum.DONE);
             repository.save(parent);
-            // Recursive check if parent also has a parent
             checkParentCompletion(parent.getParent());
         }
     }
@@ -76,7 +78,6 @@ public class SideQuestService {
         List<SideQuestEntity> quests = repository.findAllById(ids);
         quests.forEach(q -> {
             q.setState(SideQuestFinishingStateEnum.DONE);
-            // If it's a subquest, we need to check its parent
             checkParentCompletion(q.getParent());
         });
         repository.saveAll(quests);
@@ -87,7 +88,6 @@ public class SideQuestService {
         List<SideQuestEntity> quests = repository.findAllById(ids);
         quests.forEach(q -> {
             q.setState(SideQuestFinishingStateEnum.TO_BE_DONE);
-            // If it's a subquest and we revert it, we might need to revert the parent if it was auto-completed
             revertParentCompletion(q.getParent());
         });
         repository.saveAll(quests);

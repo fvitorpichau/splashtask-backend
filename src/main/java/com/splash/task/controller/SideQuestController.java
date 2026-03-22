@@ -27,6 +27,11 @@ public class SideQuestController {
         return ResponseEntity.ok(dtos);
     }
 
+    @GetMapping("/count-done")
+    public ResponseEntity<Long> getCountDone() {
+        return ResponseEntity.ok(service.countCompleted());
+    }
+
     @PostMapping
     public ResponseEntity<SideQuestDTO> createSideQuest(@RequestBody SideQuestDTO dto) {
         SideQuestEntity saved = service.create(mapper.toEntity(dto));
