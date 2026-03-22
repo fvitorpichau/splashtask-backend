@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-02-23T20:08:54-0300",
+    date = "2026-03-22T16:46:33-0300",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 21.0.8 (Homebrew)"
 )
 @Component
@@ -23,7 +23,8 @@ public class MainQuestMapperImpl implements MainQuestMapper {
 
         mainQuestEntity.setId( dto.getId() );
         mainQuestEntity.setName( dto.getName() );
-        mainQuestEntity.setUrgencyLevel( dto.getUrgencyLevel() );
+        mainQuestEntity.setCurrent( dto.getCurrent() );
+        mainQuestEntity.setTarget( dto.getTarget() );
         mainQuestEntity.setState( dto.getState() );
 
         return mainQuestEntity;
@@ -39,7 +40,8 @@ public class MainQuestMapperImpl implements MainQuestMapper {
 
         mainQuestDTO.setId( entity.getId() );
         mainQuestDTO.setName( entity.getName() );
-        mainQuestDTO.setUrgencyLevel( entity.getUrgencyLevel() );
+        mainQuestDTO.setCurrent( entity.getCurrent() );
+        mainQuestDTO.setTarget( entity.getTarget() );
         mainQuestDTO.setState( entity.getState() );
 
         return mainQuestDTO;

@@ -17,10 +17,8 @@ public class MainQuestService {
     private final MainQuestRepository repository;
 
     public List<MainQuestEntity> findAllActive() {
-        return repository.findByStateIn(Arrays.asList(
-                SideQuestFinishingStateEnum.TO_BE_DONE,
-                SideQuestFinishingStateEnum.DOING
-        ));
+        // Return all quests for the dashboard as requested
+        return repository.findAll();
     }
 
     @Transactional
