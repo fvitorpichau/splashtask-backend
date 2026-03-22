@@ -83,6 +83,26 @@ public class SideQuestService {
     }
 
     @Transactional
+    public void revertMultipleStatus(List<Long> ids) {
+        List<SideQuestEntity> quests = repository.findAllById(ids);
+        quests.forEach(q -> {
+            q.setState(SideQuestFinishingStateEnum.TO_BE_DONE);
+            // If it's a subquest and we revert it, we might need to revert the parent if it was auto-completed
+            revertParentCompletion(q.getParent());
+        });
+        repository.saveAll(quests);
+    }
+
+    private void revertParentCompletion(SideQuestEntity parent) {
+        if (parent == null) return;
+        if (parent.getState() == SideQuestFinishingStateEnum.DONE) {
+            parent.setState(SideQuestFinishingStateEnum.TO_BE_DONE);
+            repository.save(parent);
+            revertParentCompletion(parent.getParent());
+        }
+    }
+
+    @Transactional
     public SideQuestEntity addSubQuest(Long parentId, SideQuestEntity subQuest) {
         SideQuestEntity parent = repository.findById(parentId)
                 .orElseThrow(() -> new RuntimeException("Parent not found"));

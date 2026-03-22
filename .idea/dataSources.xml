@@ -13,7 +13,7 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="jdbc:postgresql://localhost:5432/postgres [DEBUG]" group="​SplashTaskApplication" uuid="331fa54c-fe8d-420d-ab31-d8f3012f2fa4">
+    <data-source source="LOCAL" name="jdbc:postgresql://localhost:5432/postgres [DEBUG]" group="​SplashTaskApplication" uuid="cec2acfe-66fc-42e0-beba-748956def4ed">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>

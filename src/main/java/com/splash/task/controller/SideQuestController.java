@@ -57,6 +57,12 @@ public class SideQuestController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/bulk-revert")
+    public ResponseEntity<Void> bulkRevert(@RequestBody List<Long> ids) {
+        service.revertMultipleStatus(ids);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/{parentId}/subquests")
     public ResponseEntity<SideQuestDTO> addSubQuest(@PathVariable Long parentId, @RequestBody SideQuestDTO subQuestDto) {
         SideQuestEntity saved = service.addSubQuest(parentId, mapper.toEntity(subQuestDto));
