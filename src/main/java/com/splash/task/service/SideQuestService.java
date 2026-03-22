@@ -5,9 +5,11 @@ import com.splash.task.model.SideQuestEntity;
 import com.splash.task.repository.SideQuestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,31 +18,78 @@ public class SideQuestService {
     private final SideQuestRepository repository;
 
     public List<SideQuestEntity> findAllActive() {
-        return repository.findByStateIn(Arrays.asList(
+        return repository.findByStateInAndParentIsNull(Arrays.asList(
                 SideQuestFinishingStateEnum.TO_BE_DONE,
                 SideQuestFinishingStateEnum.DOING
         ));
     }
 
+    @Transactional
     public SideQuestEntity create(SideQuestEntity quest) {
         return repository.save(quest);
     }
 
-    public SideQuestEntity update(SideQuestEntity quest) {
-        return repository.save(quest);
+    @Transactional
+    public SideQuestEntity update(SideQuestEntity quest, Long parentId) {
+        if (parentId != null) {
+            SideQuestEntity parent = repository.findById(parentId)
+                    .orElseThrow(() -> new RuntimeException("Parent not found"));
+            quest.setParent(parent);
+        } else if (quest.getId() != null) {
+            // Check if it already has a parent that we should preserve
+            repository.findById(quest.getId()).ifPresent(existing -> {
+                quest.setParent(existing.getParent());
+            });
+        }
+
+        SideQuestEntity updated = repository.save(quest);
+        checkParentCompletion(updated.getParent());
+        return updated;
     }
 
+    private void checkParentCompletion(SideQuestEntity parent) {
+        if (parent == null) return;
+
+        boolean allDone = parent.getSubQuests().stream()
+                .allMatch(sq -> sq.getState() == SideQuestFinishingStateEnum.DONE);
+
+        if (allDone && !parent.getSubQuests().isEmpty()) {
+            parent.setState(SideQuestFinishingStateEnum.DONE);
+            repository.save(parent);
+            // Recursive check if parent also has a parent
+            checkParentCompletion(parent.getParent());
+        }
+    }
+
+    @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
     }
 
+    @Transactional
     public void deleteMultiple(List<Long> ids) {
         repository.deleteAllById(ids);
     }
 
+    @Transactional
     public void markMultipleAsDone(List<Long> ids) {
         List<SideQuestEntity> quests = repository.findAllById(ids);
-        quests.forEach(q -> q.setState(SideQuestFinishingStateEnum.DONE));
+        quests.forEach(q -> {
+            q.setState(SideQuestFinishingStateEnum.DONE);
+            // If it's a subquest, we need to check its parent
+            checkParentCompletion(q.getParent());
+        });
         repository.saveAll(quests);
+    }
+
+    @Transactional
+    public SideQuestEntity addSubQuest(Long parentId, SideQuestEntity subQuest) {
+        SideQuestEntity parent = repository.findById(parentId)
+                .orElseThrow(() -> new RuntimeException("Parent not found"));
+        
+        subQuest.setParent(parent);
+        SideQuestEntity saved = repository.save(subQuest);
+        
+        return saved;
     }
 }

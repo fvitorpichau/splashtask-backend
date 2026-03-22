@@ -5,6 +5,8 @@ import com.splash.task.enumerators.SideQuestFinishingStateEnum;
 import com.splash.task.enumerators.SideQuestUrgencyLevelEnum;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class SideQuestDTO {
 
@@ -17,5 +19,9 @@ public class SideQuestDTO {
     private SideQuestUrgencyLevelEnum urgency;
 
     private SideQuestDurationEnum duration;
+
+    private Long parentId;
+
+    private List<SideQuestDTO> subQuests;
 
 }

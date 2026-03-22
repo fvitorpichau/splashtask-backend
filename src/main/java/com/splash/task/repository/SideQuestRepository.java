@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface SideQuestRepository extends JpaRepository<SideQuestEntity, Long> {
 
-    List<SideQuestEntity> findByStateIn(List<SideQuestFinishingStateEnum> states);
+    List<SideQuestEntity> findByStateInAndParentIsNull(List<SideQuestFinishingStateEnum> states);
 
 }

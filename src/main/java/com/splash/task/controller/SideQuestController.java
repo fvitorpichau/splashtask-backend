@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/side-quests")
@@ -19,20 +20,23 @@ public class SideQuestController {
     private final SideQuestMapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<SideQuestEntity>> getAllActiveSideQuests() {
-        return ResponseEntity.ok(service.findAllActive());
+    public ResponseEntity<List<SideQuestDTO>> getAllActiveSideQuests() {
+        List<SideQuestDTO> dtos = service.findAllActive().stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     @PostMapping
-    public ResponseEntity<SideQuestEntity> createSideQuest(@RequestBody SideQuestDTO dto) {
+    public ResponseEntity<SideQuestDTO> createSideQuest(@RequestBody SideQuestDTO dto) {
         SideQuestEntity saved = service.create(mapper.toEntity(dto));
-        return ResponseEntity.ok(saved);
+        return ResponseEntity.ok(mapper.toDto(saved));
     }
 
     @PutMapping
-    public ResponseEntity<SideQuestEntity> updateSideQuest(@RequestBody SideQuestDTO dto) {
-        SideQuestEntity updated = service.update(mapper.toEntity(dto));
-        return ResponseEntity.ok(updated);
+    public ResponseEntity<SideQuestDTO> updateSideQuest(@RequestBody SideQuestDTO dto) {
+        SideQuestEntity updated = service.update(mapper.toEntity(dto), dto.getParentId());
+        return ResponseEntity.ok(mapper.toDto(updated));
     }
 
     @DeleteMapping("/{id}")
@@ -51,6 +55,12 @@ public class SideQuestController {
     public ResponseEntity<Void> bulkDone(@RequestBody List<Long> ids) {
         service.markMultipleAsDone(ids);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{parentId}/subquests")
+    public ResponseEntity<SideQuestDTO> addSubQuest(@PathVariable Long parentId, @RequestBody SideQuestDTO subQuestDto) {
+        SideQuestEntity saved = service.addSubQuest(parentId, mapper.toEntity(subQuestDto));
+        return ResponseEntity.ok(mapper.toDto(saved));
     }
 
 }

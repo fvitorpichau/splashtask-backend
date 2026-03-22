@@ -1,5 +1,6 @@
 package com.splash.task.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.splash.task.enumerators.SideQuestDurationEnum;
 import com.splash.task.enumerators.SideQuestFinishingStateEnum;
 import com.splash.task.enumerators.SideQuestUrgencyLevelEnum;
@@ -7,6 +8,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "side_quest")
@@ -34,5 +39,14 @@ public class SideQuestEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "duration", nullable = false)
     private SideQuestDurationEnum duration;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    @JsonIgnore
+    @ToString.Exclude
+    private SideQuestEntity parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SideQuestEntity> subQuests = new ArrayList<>();
 
 }
