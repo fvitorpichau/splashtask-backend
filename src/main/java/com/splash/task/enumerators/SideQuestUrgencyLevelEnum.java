@@ -2,14 +2,18 @@ package com.splash.task.enumerators;
 
 public enum SideQuestUrgencyLevelEnum {
 
-    HIGH("HIGH"),
-    MEDIUM("MEDIUM"),
-    LOW("LOW");
+    MANAGEABLE("Manageable"),
+    CAN_WAIT("Can Wait"),
+    URGENT("Urgent");
 
-    private String value;
+    private final String value;
 
     SideQuestUrgencyLevelEnum(String value) {
         this.value = value;
+    }
+
+    public String getValue() {
+        return value;
     }
 
 }
