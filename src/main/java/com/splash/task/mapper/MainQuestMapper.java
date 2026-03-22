@@ -4,7 +4,6 @@ import com.splash.task.dto.MainQuestDTO;
 import com.splash.task.model.MainQuestEntity;
 import org.mapstruct.Mapper;
 
-
 @Mapper(componentModel = "spring")
 public interface MainQuestMapper {
 

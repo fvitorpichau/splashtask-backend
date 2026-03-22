@@ -1,11 +1,10 @@
 package com.splash.task.model;
 
 import com.splash.task.enumerators.SideQuestFinishingStateEnum;
-import com.splash.task.enumerators.SideQuestUrgencyLevelEnum;
-
 import jakarta.persistence.*;
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "main_quest")
@@ -19,15 +18,17 @@ public class MainQuestEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "urgency_level")
-    private SideQuestUrgencyLevelEnum urgencyLevel;
+    @Column(name = "current_value", nullable = false)
+    private Integer current;
+
+    @Column(name = "target_value", nullable = false)
+    private Integer target;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "state")
+    @Column(name = "state", nullable = false)
     private SideQuestFinishingStateEnum state;
 
 }
