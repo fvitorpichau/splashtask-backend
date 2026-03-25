@@ -1,5 +1,6 @@
 package com.splash.task.service;
 
+import com.splash.task.enumerators.MainQuestCategoryEnum;
 import com.splash.task.enumerators.SideQuestFinishingStateEnum;
 import com.splash.task.model.MainQuestEntity;
 import com.splash.task.repository.MainQuestRepository;
@@ -24,6 +25,7 @@ public class MainQuestService {
     @Transactional
     public MainQuestEntity create(MainQuestEntity quest) {
         if (quest.getState() == null) quest.setState(SideQuestFinishingStateEnum.TO_BE_DONE);
+        if (quest.getCategory() == null) quest.setCategory(MainQuestCategoryEnum.MIND);
         return repository.save(quest);
     }
 

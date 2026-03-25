@@ -1,5 +1,6 @@
 package com.splash.task.model;
 
+import com.splash.task.enumerators.MainQuestCategoryEnum;
 import com.splash.task.enumerators.SideQuestFinishingStateEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,5 +31,9 @@ public class MainQuestEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private SideQuestFinishingStateEnum state;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false)
+    private MainQuestCategoryEnum category = MainQuestCategoryEnum.MIND;
 
 }

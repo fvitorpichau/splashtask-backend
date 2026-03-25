@@ -25,11 +25,14 @@ public class SideQuestService {
     }
 
     public long countCompleted() {
-        return repository.countByState(SideQuestFinishingStateEnum.DONE);
+        return repository.sumWeightByStateDone();
     }
 
     @Transactional
     public SideQuestEntity create(SideQuestEntity quest) {
+        if (quest.getWeight() == null) {
+            quest.setWeight(1);
+        }
         return repository.save(quest);
     }
 
@@ -42,7 +45,14 @@ public class SideQuestService {
         } else if (quest.getId() != null) {
             repository.findById(quest.getId()).ifPresent(existing -> {
                 quest.setParent(existing.getParent());
+                if (quest.getWeight() == null) {
+                    quest.setWeight(existing.getWeight());
+                }
             });
+        }
+
+        if (quest.getWeight() == null) {
+            quest.setWeight(1);
         }
 
         SideQuestEntity updated = repository.save(quest);
@@ -107,6 +117,9 @@ public class SideQuestService {
         SideQuestEntity parent = repository.findById(parentId)
                 .orElseThrow(() -> new RuntimeException("Parent not found"));
         
+        if (subQuest.getWeight() == null) {
+            subQuest.setWeight(1);
+        }
         subQuest.setParent(parent);
         SideQuestEntity saved = repository.save(subQuest);
         

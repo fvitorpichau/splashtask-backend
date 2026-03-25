@@ -20,6 +20,8 @@ public class SideQuestDTO {
 
     private SideQuestDurationEnum duration;
 
+    private Integer weight;
+
     private Long parentId;
 
     private List<SideQuestDTO> subQuests;

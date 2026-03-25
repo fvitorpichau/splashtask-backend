@@ -1,5 +1,6 @@
 package com.splash.task.dto;
 
+import com.splash.task.enumerators.MainQuestCategoryEnum;
 import com.splash.task.enumerators.SideQuestFinishingStateEnum;
 import lombok.Data;
 
@@ -15,5 +16,7 @@ public class MainQuestDTO {
     private Integer target;
 
     private SideQuestFinishingStateEnum state;
+
+    private MainQuestCategoryEnum category;
 
 }

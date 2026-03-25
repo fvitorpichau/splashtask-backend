@@ -13,12 +13,12 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="jdbc:postgresql://localhost:5432/postgres [DEBUG]" group="​SplashTaskApplication" uuid="d3693d51-b599-49c0-9415-cb20d1aef4e0">
+    <data-source source="LOCAL" name="jdbc:postgresql://localhost:5434/postgres [DEBUG]" group="​SplashTaskApplication" uuid="a6b19caa-edd8-494b-b947-9edc3d9f98c9">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5434/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

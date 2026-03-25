@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-03-22T16:24:41-0300",
+    date = "2026-03-24T20:35:16-0300",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 21.0.8 (Homebrew)"
 )
 @Component
@@ -28,6 +28,7 @@ public class SideQuestMapperImpl implements SideQuestMapper {
         sideQuestEntity.setState( dto.getState() );
         sideQuestEntity.setUrgency( dto.getUrgency() );
         sideQuestEntity.setDuration( dto.getDuration() );
+        sideQuestEntity.setWeight( dto.getWeight() );
 
         return sideQuestEntity;
     }
@@ -46,6 +47,7 @@ public class SideQuestMapperImpl implements SideQuestMapper {
         sideQuestDTO.setState( entity.getState() );
         sideQuestDTO.setUrgency( entity.getUrgency() );
         sideQuestDTO.setDuration( entity.getDuration() );
+        sideQuestDTO.setWeight( entity.getWeight() );
         sideQuestDTO.setSubQuests( sideQuestEntityListToSideQuestDTOList( entity.getSubQuests() ) );
 
         return sideQuestDTO;

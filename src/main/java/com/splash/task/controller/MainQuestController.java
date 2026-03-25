@@ -62,5 +62,4 @@ public class MainQuestController {
         service.revertMultipleStatus(ids);
         return ResponseEntity.noContent().build();
     }
-
 }

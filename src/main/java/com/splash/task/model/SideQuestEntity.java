@@ -40,6 +40,9 @@ public class SideQuestEntity {
     @Column(name = "duration", nullable = false)
     private SideQuestDurationEnum duration;
 
+    @Column(name = "weight", nullable = false, columnDefinition = "integer default 1")
+    private Integer weight = 1;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     @JsonIgnore
