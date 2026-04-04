@@ -18,6 +18,13 @@ public class SideQuestController {
 
     private final SideQuestService service;
     private final SideQuestMapper mapper;
+    private final SideQuestImportService importService;
+
+    @PostMapping("/import-csv")
+    public ResponseEntity<Void> importCsv(@RequestParam("file") org.springframework.web.multipart.MultipartFile file) throws Exception {
+        importService.importCsv(file);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping
     public ResponseEntity<List<SideQuestDTO>> getAllActiveSideQuests() {
